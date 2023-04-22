@@ -1,5 +1,6 @@
 from pytube import YouTube
 import os
+
 def Download(link):
     youtubeObject = YouTube(link)
     youtubeObject = youtubeObject.streams.filter(only_audio=True).first()
@@ -19,17 +20,29 @@ link_list=[]
 with open('downloader_list.txt', 'r') as fh:
     link_list = [str(line) for line in fh]
 
-
-while True:
-    for link in link_list: 
+def working():
+    while True:
         list_length = len(link_list)
-        try:
-            Download(link)
-            link_list.remove(link)
-        except:
-            print(link)
-        print("Link List: ",list_length)
-        
+        list_length = 0 if list_length == 0 else list_length
+        for link in link_list: 
+            list_length = len(link_list)
+            try: 
+                Download(link)
+                link_list.remove(link)
+            except:
+                print(link)
+            print("Link List: ",list_length)
+        if list_length == 0 or list_length == 1:
+            break
 
-    if list_length ==0 or list_length ==1:
-        break
+get_one_link = str(input("Add a link or add links to the downloader_list.txt file and run it again: "))
+
+if "https://www.youtube.com/" in get_one_link:
+    print("Link Added successfully")
+    link_list.append(get_one_link)
+    working()
+else:
+    print("Not Link Working, If the file is full it will work with")
+    working()
+
+
