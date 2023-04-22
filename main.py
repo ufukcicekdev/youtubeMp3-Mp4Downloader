@@ -26,19 +26,27 @@ def Download(link,yt_format):
 
 link_list=[]
 with open('downloader_list.txt', 'r') as fh:
-    link_list = [str(line) for line in fh]
+    for line in fh:
+        if "https://www.youtube.com/" in str(line):
+            link_list.append(str(line))
+
+print("Link List",link_list)
 
 def working(yt_format):
     while True:
         list_length = len(link_list)
         list_length = 0 if list_length == 0 else list_length
         for link in link_list: 
-            list_length = len(link_list)
-            try: 
-                Download(link,yt_format)
+            if "https://www.youtube.com/" in link:
+                list_length = len(link_list)
+                try: 
+                    Download(link,yt_format)
+                    link_list.remove(link)
+                except:
+                    print(link)
+            else:
                 link_list.remove(link)
-            except:
-                print(link)
+
             print("Link List: ",list_length)
         if list_length == 0 or list_length == 1:
             break
